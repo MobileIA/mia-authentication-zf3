@@ -1,7 +1,7 @@
 {
     "name": "mobileia/mia-authentication-zf3",
     "description": "The library for Authentication in Zend Framework 3",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "minimum-stability": "stable",
     "license": "MIT",
     "authors": [
@@ -20,7 +20,8 @@
         "php": "^5.6 || ^7.0",
         "zendframework/zend-db": "^2.8.1",
         "zendframework/zend-json": "^3.0",
-        "zendframework/zend-mvc-form": "^1.0"
+        "zendframework/zend-mvc-form": "^1.0",
+        "mobileia/auth": "^0.0.9"
     },
     "autoload": {
         "psr-4": {
