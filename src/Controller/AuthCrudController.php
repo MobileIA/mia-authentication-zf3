@@ -35,6 +35,15 @@ abstract class AuthCrudController extends \MIABase\Controller\Api\CrudController
         $action->setUser($this->getUser());
         return $action->execute();
     }
+    
+    public function addAction()
+    {
+        $action = new \MIAAuthentication\Action\Api\AuthAddAction();
+        $action->setTable($this->getTable());
+        $action->setController($this);
+        $action->setUser($this->getUser());
+        return $action->execute();
+    }
     /**
      * Obtiene el usuario logueado
      * @return \MIAAuthentication\Entity\User
