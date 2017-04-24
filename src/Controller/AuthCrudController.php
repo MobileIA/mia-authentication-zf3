@@ -33,6 +33,8 @@ abstract class AuthCrudController extends \MIABase\Controller\Api\CrudController
         $action->setTable($this->getTable());
         $action->setController($this);
         $action->setUser($this->getUser());
+        $this->configAction($action);
+        
         return $action->execute();
     }
     
@@ -42,6 +44,8 @@ abstract class AuthCrudController extends \MIABase\Controller\Api\CrudController
         $action->setTable($this->getTable());
         $action->setController($this);
         $action->setUser($this->getUser());
+        $this->configAction($action);
+        
         return $action->execute();
     }
     /**
