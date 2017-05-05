@@ -26,13 +26,20 @@ class AuthAddAction extends \MIABase\Action\Base
     {
         $this->getModel()->exchangeObject($this->getParams());
         $this->table->save($this->getModel());
+        if(method_exists($this->controller, 'modelSaved')){
+            $this->controller->modelSaved($this->getModel());
+        }
     }    
     
     public function execute()
     {
         // Guardar modelo
         $this->save();
-        
+        // Generar array para la respuesta
+        if(method_exists($this->controller, 'configAddResponse')){
+            return $this->controller->configAddResponse($this->getModel()->toArray());
+        }
+        // Respuesta por defecto
         return new \Zend\View\Model\JsonModel(array(
             'success' => true, 
             'response' => $this->getModel()->toArray()
