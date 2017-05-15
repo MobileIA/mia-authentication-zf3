@@ -14,13 +14,20 @@ class AuthListAction extends \MIABase\Action\Api\ListAction
      * @var \MIAAuthentication\Entity\User
      */
     protected $user = null;
+    /**
+     * Habilita que busque en la DB a traves del UserId
+     * @var boolean
+     */
+    protected $enabledUser = true;
     
     protected function createSelect()
     {
         // Creamos Select
         $select = $this->table->select();
         // Buscamos los registros del usuario
-        $select->where->addPredicate(new \Zend\Db\Sql\Predicate\Expression('user_id = ?', $this->user->id));
+        if($this->enabledUser){
+            $select->where->addPredicate(new \Zend\Db\Sql\Predicate\Expression('user_id = ?', $this->user->id));
+        }
         // Validar los joins si existen
         foreach($this->joins as $join){
             $select->join($join['name'], $join['on'], $join['columns']);
@@ -29,6 +36,10 @@ class AuthListAction extends \MIABase\Action\Api\ListAction
         foreach($this->wheres as $predicate){
             $select->where->addPredicate($predicate);
         }
+        // Configurar el orden
+        if($this->order !== null){
+            $select->order($this->order);
+        }
         
         return $select;
     }
@@ -36,5 +47,15 @@ class AuthListAction extends \MIABase\Action\Api\ListAction
     public function setUser($user)
     {
         $this->user = $user;
+    }
+    
+    public function disableUserSearch()
+    {
+        $this->enabledUser = false;
+    }
+    
+    public function enableUserSearch()
+    {
+        $this->enabledUser = true;
     }
 }
