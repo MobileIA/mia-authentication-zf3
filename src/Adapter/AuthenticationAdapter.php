@@ -31,10 +31,16 @@ class AuthenticationAdapter implements \Zend\Authentication\Adapter\AdapterInter
      * @var \MIAAuthentication\Table\UserTable
      */
     protected $table;
+    /**
+     *
+     * @var \MobileIA\Auth\MobileiaAuth
+     */
+    protected $service;
     
-    public function __construct($table)
+    public function __construct($table, $service)
     {
         $this->table = $table;
+        $this->service = $service;
     }
     
     public function authenticate()
@@ -56,8 +62,7 @@ class AuthenticationAdapter implements \Zend\Authentication\Adapter\AdapterInter
                 ['User is retired.']);        
         }*/
         
-        $service = new \MobileIA\Auth\MobileiaAuth('2', '$2y$10$yfxndt.xX5OatbEC38JTOeMBUEA114poy4kXYJ5ALuYlN2kCHaDTy');
-        $response = $service->authenticate($this->email, $this->password);
+        $response = $this->service->authenticate($this->email, $this->password);
         if($response === false){
             // If password check didn't pass return 'Invalid Credential' failure status.
             return new Result(Result::FAILURE_CREDENTIAL_INVALID, null, ['Invalid credentials.']); 

@@ -14,7 +14,8 @@ class AuthenticationServiceFactory implements \Zend\ServiceManager\Factory\Facto
         $sessionManager = $container->get(\Zend\Session\SessionManager::class);
         $authStorage = new \Zend\Authentication\Storage\Session('Zend_Auth', 'session', $sessionManager);
         $table = $container->get(\MIAAuthentication\Table\UserTable::class);
-        $authAdapter = new \MIAAuthentication\Adapter\AuthenticationAdapter($table);
+        $mobileiaService = $container->get(\MobileIA\Auth\MobileiaAuth::class);
+        $authAdapter = new \MIAAuthentication\Adapter\AuthenticationAdapter($table, $mobileiaService);
         
         // Create the service and inject dependencies into its constructor.
         return new \Zend\Authentication\AuthenticationService($authStorage, $authAdapter);
