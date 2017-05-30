@@ -7,7 +7,7 @@ namespace MIAAuthentication\Action\Api;
  *
  * @author matiascamiletti
  */
-class AuthAddAction extends \MIABase\Action\Base
+class AuthAddAction extends \MIABase\Action\Api\Base
 {
     /**
      * Instancia del usuario logueado
