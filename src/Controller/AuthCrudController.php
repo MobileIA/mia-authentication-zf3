@@ -90,6 +90,10 @@ abstract class AuthCrudController extends \MIABase\Controller\Api\CrudController
     {
         // Obtenemos el Access Token
         $access_token = $this->getParam('access_token', '');
+        // Validamos que no sea vacio
+        if($access_token == ''){
+            return false;
+        }
         // Verificamos si es valido
         $service = $this->getMobileiaAuth();
         if($service->isValidAccessToken($access_token)){

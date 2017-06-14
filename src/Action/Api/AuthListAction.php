@@ -40,6 +40,10 @@ class AuthListAction extends \MIABase\Action\Api\ListAction
         if($this->order !== null){
             $select->order($this->order);
         }
+        // Configurar limite
+        if($this->limit > 0){
+            $select->limit($this->limit);
+        }
         
         return $select;
     }
