@@ -4,12 +4,6 @@ namespace MIAAuthentication\Entity;
 
 class User extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilterAwareInterface
 {
-
-    /**
-     * @var int
-     */
-    public $id = null;
-
     /**
      * @var int
      */
@@ -43,22 +37,18 @@ class User extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilter
     public function toArray()
     {
         $data = parent::toArray();
-        $data['id'] = $this->id;
         $data['mia_id'] = $this->mia_id;
         $data['firstname'] = $this->firstname;
         $data['lastname'] = $this->lastname;
         $data['email'] = $this->email;
         $data['photo'] = $this->photo;
         $data['facebook_id'] = $this->facebook_id;
-        $data['created_at'] = $this->created_at;
-        $data['updated_at'] = $this->updated_at;
         return $data;
     }
 
     public function exchangeArray(array $data)
     {
         parent::exchangeArray($data);
-        $this->id = (!empty($data['id'])) ? $data['id'] : 0;
         $this->mia_id = (!empty($data['mia_id'])) ? $data['mia_id'] : 0;
         $this->firstname = (!empty($data['firstname'])) ? $data['firstname'] : '';
         $this->lastname = (!empty($data['lastname'])) ? $data['lastname'] : '';
@@ -70,7 +60,6 @@ class User extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilter
     public function exchangeObject($data)
     {
         parent::exchangeObject($data);
-        $this->id = $data->id;
         $this->mia_id = $data->mia_id;
         $this->firstname = $data->firstname;
         $this->lastname = $data->lastname;
