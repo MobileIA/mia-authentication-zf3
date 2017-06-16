@@ -9,6 +9,11 @@ namespace MIAAuthentication\Action\Api;
  */
 class AuthEditAction extends AuthAddAction
 {
+    /**
+     *
+     * @var \MIABase\Entity
+     */
+    protected $old = null;
     
     public function isValid()
     {
@@ -20,8 +25,16 @@ class AuthEditAction extends AuthAddAction
     
     protected function save()
     {
+        // Copiamos datos antes de editar
+        $this->old->exchange($this->getModel()->toArray());
+        // Cargamos nuevos datos
         $this->getModel()->exchangeObject($this->controller->getAllParams());
+        // Guardamos en la DB
         $this->table->save($this->getModel());
+        // Verificamos si existe una funcionalidad extra al ser editado
+        if(method_exists($this->controller, 'modelEdited')){
+            $this->controller->modelEdited($this->old, $this->getModel());
+        }
     } 
     
     public function execute()
@@ -49,6 +62,9 @@ class AuthEditAction extends AuthAddAction
         if($this->model == null){
             $entityId = $this->controller->getParam('id', 0);
             $this->model = $this->table->fetchById($entityId);
+            // Crear objeto para almacenar los datos viejos
+            $className = $this->table->getEntityClass();
+            $this->old = new $className;
         }
         return $this->model;
     }
