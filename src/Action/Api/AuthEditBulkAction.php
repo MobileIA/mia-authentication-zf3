@@ -51,6 +51,9 @@ class AuthEditBulkAction extends AuthEditAction
         if($this->getItems()->count() == 0){
             return $this->executeError(false);
         }
+        // Crear objeto para almacenar los datos viejos
+        $className = $this->table->getEntityClass();
+        $this->old = new $className;
         // Recorremos todos los registros encontrados
         $this->items->buffer();
         foreach($this->items as $item){
@@ -58,10 +61,16 @@ class AuthEditBulkAction extends AuthEditAction
             if(!$this->controller->allowModelEdit($item)){
                 continue;
             }
+            // Copiamos datos antes de editar
+            $this->old->exchange($item->toArray());
             // Agregamos los nuevos parametros al item
             $item->exchangeObject($this->controller->getAllParams());
             // Guardar registro
             $this->table->save($item);
+            // Verificamos si existe una funcionalidad extra al ser editado
+            if(method_exists($this->controller, 'modelEdited')){
+                $this->controller->modelEdited($this->old, $item);
+            }
         }
         // Volver a iniciar el array
         $this->getItems()->rewind();
