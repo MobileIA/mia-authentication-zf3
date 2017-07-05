@@ -23,6 +23,8 @@ abstract class AuthCrudController extends \MIABase\Controller\Api\CrudController
                 'response' => false
             )));
             $e->stopPropagation();
+            // Paramos la petición
+            return;
         }
         parent::onDispatch($e);
     }
