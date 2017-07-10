@@ -39,3 +39,15 @@ return [
     'Application',
 ];
 ```
+7. Una vez activado el modulo, debemos asignar los permisos a los controladores, editar el archivo de configuración, por ejemplo: module/Application/config/module.config.php
+```php
+'authentication_acl' => [
+    'resources' => [
+        Controller\IndexController::class => [
+            'actions' => [
+                'index' => ['allow' => 'guest']
+            ]
+        ],
+    ],
+],
+```
