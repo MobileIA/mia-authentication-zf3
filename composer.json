@@ -17,6 +17,10 @@
         },
         {
             "type": "git",
+            "url": "https://github.com/MobileIA/authentication"
+        },
+        {
+            "type": "git",
             "url": "https://github.com/MobileIA/mia-authentication-zf3.git"
         }
     ],
