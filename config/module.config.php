@@ -44,6 +44,7 @@ return array(
     ],
     'service_manager' => [
         'factories' => [
+            \MobileIA\Auth\MobileiaAuth::class => Factory\MobileiaAuthFactory::class,
             \Zend\Authentication\AuthenticationService::class => Factory\AuthenticationServiceFactory::class,
             Adapter\AclAdapter::class => Factory\AclAdapterFactory::class,
         ],
