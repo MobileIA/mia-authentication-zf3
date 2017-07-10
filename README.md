@@ -22,10 +22,20 @@
 ```bash
 $ composer update
 ```
-4. Agregar APP_ID y APP_SECRET en el archivo de configuración:
+4. Registrar nueva App en [MobileIA Lab](http://lab.mobileia.com).
+5. Agregar APP_ID y APP_SECRET en el archivo de configuración:
 ```php
 'mobileia_lab' => [
     'app_id' => 5343,
     'app_secret' => '$2y$10aS$I5OAGUWxqrdsJ1LGs2dsKFodssdbu1avhr5FNPRsal.aZWBossp933r9NFPzu'
 ]
+```
+6. Activar modulo en zf3, abrir archivo: config/modules.config.php
+```php
+return [
+    // Others modules
+    'MIABase',
+    'MIAAuthentication',
+    'Application',
+];
 ```
