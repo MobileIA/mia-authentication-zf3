@@ -1,7 +1,7 @@
 {
     "name": "mobileia/mia-authentication-zf3",
     "description": "The library for Authentication in Zend Framework 3",
-    "version": "0.0.20",
+    "version": "0.0.21",
     "minimum-stability": "stable",
     "license": "MIT",
     "authors": [
@@ -11,6 +11,10 @@
         }
     ],
     "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/MobileIA/mia-layout-lte-zf3.git"
+        },
         {
             "type": "git",
             "url": "https://github.com/MobileIA/mia-authentication-zf3.git"
@@ -24,7 +28,8 @@
         "zendframework/zend-paginator": "^2.7",
         "zendframework/zend-permissions-acl": "^2.6",
         "mobileia/auth": "^0.0",
-        "mobileia/mia-base-zf3": "^0.0"
+        "mobileia/mia-base-zf3": "^0.0",
+        "mobileia/mia-layout-lte-zf3": "^0.0"
     },
     "autoload": {
         "psr-4": {

@@ -35,6 +35,7 @@ $ composer update
 return [
     // Others modules
     'MIABase',
+    'MIALayoutLTE',
     'MIAAuthentication',
     'Application',
 ];
