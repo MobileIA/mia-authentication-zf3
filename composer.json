@@ -22,6 +22,7 @@
         "zendframework/zend-json": "^3.0",
         "zendframework/zend-mvc-form": "^1.0",
         "zendframework/zend-paginator": "^2.7",
+        "zendframework/zend-permissions-acl": "^2.6",
         "mobileia/auth": "^0.0",
         "mobileia/mia-base-zf3": "^0.0"
     },
