@@ -67,10 +67,10 @@ class LoginController extends AbstractActionController
         // If user wants to "remember him", we will make session to expire in 
         // one month. By default session expires in 1 hour (as specified in our 
         // config/global.php file).
-        //if ($result->getCode()==Result::SUCCESS && $rememberMe) {
-            // Session cookie will expire in 1 month (30 days).
-            //$this->sessionManager->rememberMe(60*60*24*30);
-        //}
+        if ($result->getCode() == \Zend\Authentication\Result::SUCCESS && $data['remember_me'] == 1) {
+            // Session cookie will expire in 1 month (15 days).
+            $this->getSessionManager()->rememberMe(60*60*24*15);
+        }
         
         $redirectUrl = $this->getRedirectUrl();
         // otherwise redirect to Home page.
@@ -103,6 +103,14 @@ class LoginController extends AbstractActionController
     protected function getAuthenticationService()
     {
         return $this->getEvent()->getApplication()->getServiceManager()->get(\Zend\Authentication\AuthenticationService::class);
+    }
+    /**
+     * 
+     * @return \Zend\Session\SessionManager
+     */
+    protected function getSessionManager()
+    {
+        return $this->getEvent()->getApplication()->getServiceManager()->get(\Zend\Session\SessionManager::class);
     }
     
     /**
