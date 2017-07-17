@@ -18,13 +18,17 @@ class AuthAddAction extends \MIABase\Action\Api\Base
     protected function getParams()
     {
         $params = $this->controller->getAllParams();
-        $params->user_id = $this->user->id;
+        if(is_object($params)){
+            $params->user_id = $this->user->id;
+        }else if(is_array($params)){
+            $params['user_id'] = $this->user->id;
+        }
         return $params;
     }
     
     protected function save()
     {
-        $this->getModel()->exchangeObject($this->getParams());
+        $this->getModel()->exchange($this->getParams());
         $this->table->save($this->getModel());
         if(method_exists($this->controller, 'modelSaved')){
             $this->controller->modelSaved($this->getModel());
