@@ -40,8 +40,13 @@ class Module implements \Zend\ModuleManager\Feature\ConfigProviderInterface
         
         /* @var $aclManager \MIAAuthentication\Adapter\AclAdapter */
         $aclManager = $event->getApplication()->getServiceManager()->get(Adapter\AclAdapter::class);
-        /* @var $authService \Zend\Authentication\AuthenticationService */
-        $authService = $event->getApplication()->getServiceManager()->get(\Zend\Authentication\AuthenticationService::class);
+        
+        try {
+            /* @var $authService \Zend\Authentication\AuthenticationService */
+            $authService = $event->getApplication()->getServiceManager()->get(\Zend\Authentication\AuthenticationService::class);
+        } catch (\Zend\ServiceManager\Exception\ServiceNotCreatedException $exc) {
+            return $controller->redirect()->toUrl('/#!/?cook=refresh');
+        }
         
         if($authService->getIdentity() === null){
             $role = 'guest';
