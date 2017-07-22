@@ -27,6 +27,11 @@ class User extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilter
     /**
      * @var string
      */
+    public $phone = null;
+    
+    /**
+     * @var string
+     */
     public $photo = null;
 
     /**
@@ -42,6 +47,7 @@ class User extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilter
         $data['lastname'] = $this->lastname;
         $data['email'] = $this->email;
         $data['photo'] = $this->photo;
+        $data['phone'] = $this->phone;
         $data['facebook_id'] = $this->facebook_id;
         return $data;
     }
@@ -54,6 +60,7 @@ class User extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilter
         $this->lastname = (!empty($data['lastname'])) ? $data['lastname'] : '';
         $this->email = (!empty($data['email'])) ? $data['email'] : '';
         $this->photo = (!empty($data['photo'])) ? $data['photo'] : '';
+        $this->phone = (!empty($data['phone'])) ? $data['phone'] : '';
         $this->facebook_id = (!empty($data['facebook_id'])) ? $data['facebook_id'] : '';
     }
 
@@ -65,6 +72,7 @@ class User extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilter
         $this->lastname = $data->lastname;
         $this->email = $data->email;
         $this->photo = $data->photo;
+        $this->phone = $data->phone;
         $this->facebook_id = $data->facebook_id;
     }
 
@@ -75,13 +83,6 @@ class User extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilter
         }
                 
         $inputFilter = new \Zend\InputFilter\InputFilter();
-        $inputFilter->add([
-                    'name' => 'id',
-                    'required' => true,
-                    'filters' => [
-                        ['name' => \Zend\Filter\ToInt::class],
-                    ],
-                ]);
         $inputFilter->add([
                     'name' => 'mia_id',
                     'required' => true,
@@ -135,31 +136,29 @@ class User extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilter
                     ],
                 ]);
         $inputFilter->add([
-                    'name' => 'photo',
-                    'required' => true,
-                    'filters' => [
-                        ['name' => \Zend\Filter\StripTags::class],
-                        ['name' => \Zend\Filter\StringTrim::class],
-                    ],
-                ]);
+            'name' => 'photo',
+            'required' => false,
+            'filters' => [
+                ['name' => \Zend\Filter\StripTags::class],
+                ['name' => \Zend\Filter\StringTrim::class],
+            ],
+        ]);
         $inputFilter->add([
-                    'name' => 'facebook_id',
-                    'required' => true,
-                    'filters' => [
-                        ['name' => \Zend\Filter\StripTags::class],
-                        ['name' => \Zend\Filter\StringTrim::class],
-                    ],
-                    'validators' => [
-                        [
-                            'name' => \Zend\Validator\StringLength::class,
-                            'options' => [
-                                'encoding' => 'UTF-8',
-                                'min' => 1,
-                                'max' => 100,
-                            ],
-                        ],
-                    ],
-                ]);
+            'name' => 'phone',
+            'required' => false,
+            'filters' => [
+                ['name' => \Zend\Filter\StripTags::class],
+                ['name' => \Zend\Filter\StringTrim::class],
+            ],
+        ]);
+        $inputFilter->add([
+            'name' => 'facebook_id',
+            'required' => false,
+            'filters' => [
+                ['name' => \Zend\Filter\StripTags::class],
+                ['name' => \Zend\Filter\StringTrim::class],
+            ],
+        ]);
 
 
         $this->inputFilter = $inputFilter;
