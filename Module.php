@@ -45,6 +45,9 @@ class Module implements \Zend\ModuleManager\Feature\ConfigProviderInterface
             /* @var $authService \Zend\Authentication\AuthenticationService */
             $authService = $event->getApplication()->getServiceManager()->get(\Zend\Authentication\AuthenticationService::class);
         } catch (\Zend\ServiceManager\Exception\ServiceNotCreatedException $exc) {
+            // Eliminar session
+            session_destroy();
+            // Redirigir a la home
             return $controller->redirect()->toUrl('/#!/?cook=refresh');
         }
         
