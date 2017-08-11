@@ -22,7 +22,16 @@ class BaseCrudController extends \MIABase\Controller\CrudController
     protected $template = 'mia-layout-lte';
 
     protected $route = 'user';
-
+    /**
+     * 
+     * @param \MIAAuthentication\Entity\User $user
+     */
+    public function modelDeleted($user)
+    {
+        // Eliminar usuario de MobileiaAuth
+        $this->getMobileiaAuth()->removeUser($user->mia_id);
+    }
+    
     public function columns()
     {
         return array(
@@ -38,6 +47,14 @@ class BaseCrudController extends \MIABase\Controller\CrudController
     
     public function fields()
     {
+    }
+    /**
+     * 
+     * @return \MobileIA\Auth\MobileiaAuth
+     */
+    protected function getMobileiaAuth()
+    {
+        return $this->getServiceManager()->get(\MobileIA\Auth\MobileiaAuth::class);
     }
 }
 
