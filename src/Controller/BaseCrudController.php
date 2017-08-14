@@ -41,8 +41,16 @@ class BaseCrudController extends \MIABase\Controller\CrudController
             array('type' => 'string', 'title' => 'Email', 'field' => 'email', 'is_search' => true),
             array('type' => 'image', 'title' => 'Foto', 'field' => 'photo', 'is_search' => true),
             array('type' => 'string', 'title' => 'Telefono', 'field' => 'phone', 'is_search' => true),
-            array('type' => 'actions', 'title' => 'Acciones')
+            array('type' => 'actions', 'title' => 'Acciones', 'more' => $this->getMoreActions())
         );
+    }
+    /**
+     * Configur si tiene mas Actions en el listado
+     * @return array
+     */
+    public function getMoreActions()
+    {
+        return array();
     }
     
     public function fields()
