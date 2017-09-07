@@ -4,6 +4,9 @@ namespace MIAAuthentication\Entity;
 
 class User extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilterAwareInterface
 {
+    const ROLE_MEMBER = 0;
+    const ROLE_ADMIN = 1;
+    
     /**
      * @var int
      */
@@ -38,6 +41,11 @@ class User extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilter
      * @var string
      */
     public $facebook_id = null;
+    
+    /**
+     * @var int
+     */
+    public $role = null;
 
     public function toArray()
     {
@@ -49,6 +57,7 @@ class User extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilter
         $data['photo'] = $this->photo;
         $data['phone'] = $this->phone;
         $data['facebook_id'] = $this->facebook_id;
+        $data['role'] = $this->role;
         return $data;
     }
 
@@ -62,6 +71,7 @@ class User extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilter
         $this->photo = (!empty($data['photo'])) ? $data['photo'] : '';
         $this->phone = (!empty($data['phone'])) ? $data['phone'] : '';
         $this->facebook_id = (!empty($data['facebook_id'])) ? $data['facebook_id'] : '';
+        $this->role = (!empty($data['role'])) ? $data['role'] : 0;
     }
 
     public function exchangeObject($data)
@@ -74,6 +84,7 @@ class User extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilter
         $this->photo = $data->photo;
         $this->phone = $data->phone;
         $this->facebook_id = $data->facebook_id;
+        $this->role = $data->role;
     }
 
     public function getInputFilter()
@@ -86,6 +97,13 @@ class User extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilter
         $inputFilter->add([
                     'name' => 'mia_id',
                     'required' => true,
+                    'filters' => [
+                        ['name' => \Zend\Filter\ToInt::class],
+                    ],
+                ]);
+        $inputFilter->add([
+                    'name' => 'role',
+                    'required' => false,
                     'filters' => [
                         ['name' => \Zend\Filter\ToInt::class],
                     ],

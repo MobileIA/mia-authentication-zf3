@@ -53,12 +53,14 @@ class Module implements \Zend\ModuleManager\Feature\ConfigProviderInterface
         
         if($authService->getIdentity() === null){
             $role = 'guest';
+        }else if($authService->getIdentity()->role == \MIAAuthentication\Entity\User::ROLE_ADMIN){
+            $role = 'admin';
         }else{
             $role = 'member';
         }
         
         if(!$aclManager->getAcl()->isAllowed($role, $controllerName . ':' . $actionName)){
-            if($role == 'member'){
+            if($role != 'guest'){
                 return $controller->redirect()->toRoute('privileges', [],['query' => ['redirectUrl' => $this->getRedirectUrl($event)]]);
             }else{
                 return $controller->redirect()->toRoute('authentication', [],['query' => ['redirectUrl' => $this->getRedirectUrl($event)]]);
