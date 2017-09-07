@@ -27,21 +27,21 @@ class Login extends \MIABase\Form\Base
             'name' => 'password',
             'type' => 'password',
             'options' => [
-                'label' => 'Passsword'
+                'label' => 'Contraseña'
             ],
         ]);
         $this->add([
             'name' => 'remember_me',
             'type' => 'checkbox',
             'options' => [
-                'label' => 'Remember me'
+                'label' => 'Recordarme'
             ],
         ]);
         $this->add([
             'name' => 'submit',
             'type' => 'submit',
             'attributes' => [
-                'value' => 'Enviar',
+                'value' => 'Ingresar',
                 'id'    => 'submitbutton',
             ],
         ]);
