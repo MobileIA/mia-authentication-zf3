@@ -80,7 +80,7 @@ return array(
             // not logged in users. Restrictive mode is more secure and recommended to use.
             'mode' => 'restrictive'
         ],
-        'roles' => ['guest', 'member:guest', 'admin'],
+        'roles' => ['guest', 'member:guest', 'admin:member'],
         'resources' => [
             Controller\LoginController::class => [
                 'actions' => [
