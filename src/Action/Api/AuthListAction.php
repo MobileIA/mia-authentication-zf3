@@ -44,6 +44,10 @@ class AuthListAction extends \MIABase\Action\Api\ListAction
         if($this->limit > 0){
             $select->limit($this->limit);
         }
+        // Verificar si los registros se eliminan por columna
+        if($this->table->hasDeleted()){
+            $select->where->addPredicate(new \Zend\Db\Sql\Predicate\Expression('deleted = 0'));
+        }
         
         return $select;
     }
