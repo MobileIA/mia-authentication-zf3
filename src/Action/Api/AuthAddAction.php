@@ -50,7 +50,7 @@ class AuthAddAction extends \MIABase\Action\Api\Base
         ));
     }
     
-    protected function getModel()
+    public function getModel()
     {
         if($this->model == null){
             $className = $this->table->getEntityClass();
