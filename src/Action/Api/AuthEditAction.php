@@ -57,7 +57,7 @@ class AuthEditAction extends AuthAddAction
         return $this->executeSuccess($this->getModel()->toArray());
     }
     
-    protected function getModel()
+    public function getModel()
     {
         if($this->model == null){
             $entityId = $this->controller->getParam('id', 0);
