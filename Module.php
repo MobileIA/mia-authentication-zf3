@@ -15,6 +15,8 @@ class Module implements \Zend\ModuleManager\Feature\ConfigProviderInterface
      */
     public function onBootstrap(\Zend\Mvc\MvcEvent $event)
     {
+        // Validar sessión para cuando se corrompe
+        $this->validateSession($event->getApplication()->getServiceManager()->get(\Zend\Session\SessionManager::class));
         // Get event manager.
         $eventManager = $event->getApplication()->getEventManager();
         $sharedEventManager = $eventManager->getSharedManager();
@@ -66,6 +68,21 @@ class Module implements \Zend\ModuleManager\Feature\ConfigProviderInterface
                 return $controller->redirect()->toRoute('authentication', [],['query' => ['redirectUrl' => $this->getRedirectUrl($event)]]);
             }
         }
+    }
+    /**
+     * Validamos si la sesión se rompio
+     * @param \Zend\Session\SessionManager $sessionManager
+     */
+    protected function validateSession($sessionManager)
+    {
+        try {
+            $sessionManager->start();
+            return;
+        } catch (\Exception $e) {}
+        /**
+         * Session validation failed: toast it and carry on.
+         */
+        session_unset();
     }
     
     public function getRedirectUrl($event)
