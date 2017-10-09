@@ -99,18 +99,6 @@ class Module implements \Zend\ModuleManager\Feature\ConfigProviderInterface
         return $uri->toString();
     }
 
-    public function getServiceConfig()
-    {
-        return [
-            'factories' => [
-                Table\UserTable::class => function($container){
-                    $dbAdapter = $container->get('Zend\Db\Adapter\Adapter');
-                    return new Table\UserTable($dbAdapter);
-                }
-            ]
-        ];
-    }
-    
     public function getAutoloaderConfig()
     {
         return array(

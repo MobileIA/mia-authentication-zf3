@@ -35,15 +35,27 @@ return array(
                     ],
                 ],
             ],
+            'mobileia-register' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/mobileia/register',
+                    'defaults' => [
+                        'controller' => Controller\ApiController::class,
+                        'action'     => 'mobileia',
+                    ],
+                ],
+            ],
         ],
     ],
     'controllers' => [
         'factories' => [
-            Controller\LoginController::class => InvokableFactory::class
+            Controller\LoginController::class => InvokableFactory::class,
+            Controller\ApiController::class => InvokableFactory::class
         ],
     ],
     'service_manager' => [
         'factories' => [
+            Table\UserTable::class => \MIABase\Factory\TableFactory::class,
             \MobileIA\Auth\MobileiaAuth::class => Factory\MobileiaAuthFactory::class,
             \Zend\Authentication\AuthenticationService::class => Factory\AuthenticationServiceFactory::class,
             Adapter\AclAdapter::class => Factory\AclAdapterFactory::class,
@@ -86,6 +98,11 @@ return array(
                 'actions' => [
                     'index' => ['allow' => 'guest', 'deny' => 'member,admin'],
                     'logout' => ['allow' => 'member,admin', 'deny' => 'guest']
+                ]
+            ],
+            Controller\ApiController::class => [
+                'actions' => [
+                    'mobileia' => ['allow' => 'guest', 'deny' => 'member,admin']
                 ]
             ]
         ],
