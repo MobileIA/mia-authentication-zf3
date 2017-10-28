@@ -55,7 +55,14 @@ class AclAdapter
     protected function addRole($name, $parent = null)
     {
         $role = new Role($name);
-        $this->acl->addRole($role, $parent);
+        try {
+            $this->acl->addRole($role, $parent);
+        } catch (\Zend\Permissions\Acl\Exception\InvalidArgumentException $exc) {
+            // Si ya existe el rol lo eliminamos
+            $this->acl->removeRole($role);
+            // Lo Agregamos de nuevo
+            $this->acl->addRole($role, $parent);
+        }
     }
     
     protected function resources($data)
