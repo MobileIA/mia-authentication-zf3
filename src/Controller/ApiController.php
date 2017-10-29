@@ -42,7 +42,7 @@ class ApiController extends \MIABase\Controller\Api\BaseApiController
         if($user->facebook_id == null){
             $user->facebook_id = '';
         }
-        $user->role = \MIAAuthentication\Entity\User::ROLE_MEMBER;
+        $user->role = $this->getParam('role', \MIAAuthentication\Entity\User::ROLE_MEMBER);
     }
     
     /**
