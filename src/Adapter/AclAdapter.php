@@ -30,6 +30,27 @@ class AclAdapter
         // Procesar permisos
         $this->process();
     }
+    /**
+     * Obtiene el string del rol
+     * @param int $roleId
+     * @return string
+     */
+    public function getRoleByID($roleId)
+    {
+        $ids = $this->config['roles_id'];
+        for($i = 0; $i < count($ids); $i++){
+            if($ids[$i] == $roleId){
+                $rol = $this->config['roles'][$i];
+                $n = explode(':', $rol);
+                if(count($n) > 1){
+                    return $n[0];
+                }else{
+                    return $rol;
+                }
+            }
+        }
+        return '';
+    }
     
     protected function process()
     {

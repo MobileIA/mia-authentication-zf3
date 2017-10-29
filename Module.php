@@ -55,10 +55,8 @@ class Module implements \Zend\ModuleManager\Feature\ConfigProviderInterface
         
         if($authService->getIdentity() === null){
             $role = 'guest';
-        }else if($authService->getIdentity()->role == \MIAAuthentication\Entity\User::ROLE_ADMIN){
-            $role = 'admin';
         }else{
-            $role = 'member';
+            $role = $aclManager->getRoleByID($authService->getIdentity()->role);
         }
         
         if(!$aclManager->getAcl()->isAllowed($role, $controllerName . ':' . $actionName)){

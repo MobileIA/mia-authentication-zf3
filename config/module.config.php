@@ -93,6 +93,7 @@ return array(
             'mode' => 'restrictive'
         ],
         'roles' => ['guest', 'member:guest', 'admin:member'],
+        'roles_id' => [-1, 0, 1],
         'resources' => [
             Controller\LoginController::class => [
                 'actions' => [
