@@ -27,9 +27,16 @@ class ApiController extends \MIABase\Controller\Api\BaseApiController
         $this->updateParams($user);
         // Guardamos el nuevo usuario
         $this->getUserTable()->save($user);
+        // Llamamos a la funcion para generar configuraciones extras
+        $this->modelSaved($user);
         // Devolvemos datos del usuario
         return $this->executeSuccess($user->toArray());
     }
+    /**
+     * Metodo que se ejecuta despues de crear/modificar el usuario
+     * @param \MIAAuthentication\Entity\User $user
+     */
+    protected function modelSaved($user){ }
     
     protected function updateParams($user)
     {
