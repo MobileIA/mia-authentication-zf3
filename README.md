@@ -8,6 +8,14 @@
     {
         "type": "git",
         "url": "https://github.com/MobileIA/mia-authentication-zf3.git"
+    },
+    {
+        "type": "git",
+        "url": "https://github.com/MobileIA/mia-layout-lte-zf3.git"
+    },
+    {
+        "type": "git",
+        "url": "https://github.com/MobileIA/authentication"
     }
 ],
 ```
@@ -15,6 +23,8 @@
 ```json
 "require": {
     // ... others libraries ...
+    "mobileia/mia-layout-lte-zf3": "^0.0",
+    "mobileia/auth": "^0.0",
     "mobileia/mia-authentication-zf3": "^0.0"
 },
 ```
