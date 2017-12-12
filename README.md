@@ -52,3 +52,11 @@ return [
     ],
 ],
 ```
+
+# Como cambiar el Template de la pantalla de Login:
+1. Editamos un archivo de configuración del modulo:
+```php
+'mia_layout' => [
+    'login_template' => 'mia-layout-elite/login/right'
+]
+```

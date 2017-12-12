@@ -172,8 +172,21 @@ class LoginController extends AbstractActionController
                 'form' => $this->getForm()
             ));
             $this->view->setTerminal(true);
-            $this->view->setTemplate('mia-layout-lte/login/basic');
+            $this->view->setTemplate($this->getLayoutVar('login_template', 'mia-layout-lte/login/basic'));
         }
         return $this->view;
+    }
+    /**
+     * Devuelve Variable del Layout
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
+    public function getLayoutVar($key, $default)
+    {
+        // Obtenemos helper
+        $miaLayout = $this->getEvent()->getApplication()->getServiceManager()->get('ViewHelperManager')->get('miaLayout');
+        // Obtenemos variable
+        return $miaLayout()->get($key, $default);
     }
 }
