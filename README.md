@@ -10,8 +10,16 @@
         "url": "https://github.com/MobileIA/mia-authentication-zf3.git"
     },
     {
+            "type": "git",
+            "url": "https://github.com/MobileIA/mia-layout-zf3.git"
+        },
+    {
         "type": "git",
         "url": "https://github.com/MobileIA/mia-layout-lte-zf3.git"
+    },
+    {
+        "type": "git",
+        "url": "https://github.com/MobileIA/mia-layout-elite-zf3.git"
     },
     {
         "type": "git",
@@ -23,7 +31,9 @@
 ```json
 "require": {
     // ... others libraries ...
+    "mobileia/mia-layout-zf3": "^0.0",
     "mobileia/mia-layout-lte-zf3": "^0.0",
+    "mobileia/mia-layout-elite-zf3": "^0.0",
     "mobileia/auth": "^0.0",
     "mobileia/mia-authentication-zf3": "^0.0"
 },
@@ -45,7 +55,9 @@ $ composer update
 return [
     // Others modules
     'MIABase',
+    'MIALayout',
     'MIALayoutLTE',
+    'MIALayoutElite',
     'MIAAuthentication',
     'Application',
 ];
