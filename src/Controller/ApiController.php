@@ -9,6 +9,56 @@ namespace MIAAuthentication\Controller;
  */
 class ApiController extends \MIABase\Controller\Api\BaseApiController
 {
+    public function signinAction()
+    {
+        // Obtenemos parametros
+        $data = array('email' => $this->getParam('email', ''), 'password' => $this->getParam('password', ''), 'remember_me' => 1);
+        // Creamos formulario
+        $form = new \MIAAuthentication\Form\Login();
+        // Cargamos los parametros al formulario
+        $form->setData($data);
+        // Validamos el formulario
+        if(!$form->isValid()) {
+            return $this->executeError(\MIABase\Controller\Api\Error::REQUIRED_PARAMS);
+        }
+        // Obtenemos los datos procesados del formulario
+        $params = $form->getData();
+        // Ejecutamos el login
+        $result = $this->authenticate($params['email'],$params['password']);
+        // Verificar si los datos son incorrectos
+        if ($result->getCode() != \Zend\Authentication\Result::SUCCESS) {
+            return $this->executeError(\MIABase\Controller\Api\Error::INVALID_PASSWORD);
+        }
+        // Verificar si se quiere guardar la sesión
+        if ($params['remember_me'] == 1) {
+            // Session cookie will expire in 1 month (15 days).
+            $this->getSessionManager()->rememberMe(60*60*24*15);
+        }
+        
+        return $this->executeSuccess(true);
+    }
+    
+    /**
+     * Servicio que verifica si un email ya esta registrado
+     * @return Json
+     */
+    public function existAction()
+    {
+        // Obtenemos email a verificar
+        $email = $this->getParam('email', '');
+        // Verificamos si se envio el parametro
+        if($email == ''){
+            return $this->executeError(\MIABase\Controller\Api\Error::REQUIRED_PARAMS);
+        }
+        // Buscar en la DB este email
+        $user = $this->getUserTable()->fetchByEmail($email);
+        // Verificamos si existe el usuario
+        if($user === null){
+            return $this->executeSuccess(false);
+        }
+        return $this->executeSuccess(true);
+    }
+    
     public function mobileiaAction()
     {
         // TODO: agregar validación para que no pueda cualquiera agregar usuarios
@@ -52,6 +102,38 @@ class ApiController extends \MIABase\Controller\Api\BaseApiController
         $user->role = $this->getParam('role', \MIAAuthentication\Entity\User::ROLE_MEMBER);
     }
     
+    /**
+     * 
+     * @param string $email
+     * @param string $password
+     * @return Zend\Authentication\Result
+     */
+    protected function authenticate($email, $password)
+    {
+        $service = $this->getAuthenticationService();
+        /* @var $adapter \MIAAuthentication\Adapter\AuthenticationAdapter */
+        $adapter = $service->getAdapter();
+        $adapter->setEmail($email);
+        $adapter->setPassword($password);
+        // Autenticar
+        return $service->authenticate();
+    }
+    /**
+     * 
+     * @return \Zend\Authentication\AuthenticationService
+     */
+    protected function getAuthenticationService()
+    {
+        return $this->getEvent()->getApplication()->getServiceManager()->get(\Zend\Authentication\AuthenticationService::class);
+    }
+    /**
+     * 
+     * @return \Zend\Session\SessionManager
+     */
+    protected function getSessionManager()
+    {
+        return $this->getEvent()->getApplication()->getServiceManager()->get(\Zend\Session\SessionManager::class);
+    }
     /**
      * 
      * @return \MIAAuthentication\Table\UserTable

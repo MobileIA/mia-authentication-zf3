@@ -18,6 +18,15 @@ class UserTable extends \MIABase\Table\Base
         return $rowset->current();
     }
     /**
+     * Obtiene un usuario a traves de su email
+     * @param string $email
+     * @return \MIAAuthentication\Entity\User|null
+     */
+    public function fetchByEmail($email)
+    {
+        return $this->tableGateway->select(array('email' => $email))->current();
+    }
+    /**
      * Obtiene todos los usuarios indicados por su IDs
      * @param array $ids
      * @return array

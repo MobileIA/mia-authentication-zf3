@@ -45,6 +45,26 @@ return array(
                     ],
                 ],
             ],
+            'is-exist-email' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/authentication/is-exist',
+                    'defaults' => [
+                        'controller' => Controller\ApiController::class,
+                        'action'     => 'exist',
+                    ],
+                ],
+            ],
+            'api-signin' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/api/authentication',
+                    'defaults' => [
+                        'controller' => Controller\ApiController::class,
+                        'action'     => 'signin',
+                    ],
+                ],
+            ],
         ],
     ],
     'controllers' => [
@@ -103,7 +123,9 @@ return array(
             ],
             Controller\ApiController::class => [
                 'actions' => [
-                    'mobileia' => ['allow' => 'guest', 'deny' => 'member,admin']
+                    'mobileia' => ['allow' => 'guest', 'deny' => 'member,admin'],
+                    'exist' => ['allow' => 'guest'],
+                    'signin' => ['allow' => 'guest'],
                 ]
             ]
         ],
