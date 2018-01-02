@@ -83,4 +83,102 @@ class User extends \MIABase\Form\Base
             ],
         ]);
     }
+    
+    public function addInputFilter()
+    {
+        $inputFilter = new \Zend\InputFilter\InputFilter();
+        $inputFilter->add([
+                    'name' => 'mia_id',
+                    'required' => true,
+                    'filters' => [
+                        ['name' => \Zend\Filter\ToInt::class],
+                    ],
+                ]);
+        $inputFilter->add([
+                    'name' => 'role',
+                    'required' => false,
+                    'filters' => [
+                        ['name' => \Zend\Filter\ToInt::class],
+                    ],
+                ]);
+        $inputFilter->add([
+                    'name' => 'firstname',
+                    'required' => true,
+                    'filters' => [
+                        ['name' => \Zend\Filter\StripTags::class],
+                        ['name' => \Zend\Filter\StringTrim::class],
+                    ],
+                    'validators' => [
+                        [
+                            'name' => \Zend\Validator\StringLength::class,
+                            'options' => [
+                                'encoding' => 'UTF-8',
+                                'min' => 1,
+                                'max' => 100,
+                            ],
+                        ],
+                    ],
+                ]);
+        $inputFilter->add([
+                    'name' => 'lastname',
+                    'required' => true,
+                    'filters' => [
+                        ['name' => \Zend\Filter\StripTags::class],
+                        ['name' => \Zend\Filter\StringTrim::class],
+                    ],
+                    'validators' => [
+                        [
+                            'name' => \Zend\Validator\StringLength::class,
+                            'options' => [
+                                'encoding' => 'UTF-8',
+                                'min' => 1,
+                                'max' => 100,
+                            ],
+                        ],
+                    ],
+                ]);
+        $inputFilter->add([
+                    'name' => 'email',
+                    'required' => true,
+                    'validators' => [
+                        [
+                            'name' => \Zend\Validator\EmailAddress::class,
+                        ],
+                        [
+                            'name' => \Zend\Validator\Db\NoRecordExists::class,
+                            'options' => [
+                                'table' => 'mia_user',
+                                'field' => 'email',
+                                'adapter' => $this->getServiceManager()->get('Zend\Db\Adapter\Adapter')
+                            ]
+                        ]
+                    ],
+                ]);
+        $inputFilter->add([
+            'name' => 'photo',
+            'required' => false,
+            'filters' => [
+                ['name' => \Zend\Filter\StripTags::class],
+                ['name' => \Zend\Filter\StringTrim::class],
+            ],
+        ]);
+        $inputFilter->add([
+            'name' => 'phone',
+            'required' => false,
+            'filters' => [
+                ['name' => \Zend\Filter\StripTags::class],
+                ['name' => \Zend\Filter\StringTrim::class],
+            ],
+        ]);
+        $inputFilter->add([
+            'name' => 'facebook_id',
+            'required' => false,
+            'filters' => [
+                ['name' => \Zend\Filter\StripTags::class],
+                ['name' => \Zend\Filter\StringTrim::class],
+            ],
+        ]);
+        
+        $this->setInputFilter($inputFilter);
+    }
 }
