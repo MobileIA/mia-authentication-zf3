@@ -65,6 +65,16 @@ return array(
                     ],
                 ],
             ],
+            'api-register' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/api/auth/regiter',
+                    'defaults' => [
+                        'controller' => Controller\ApiController::class,
+                        'action'     => 'register',
+                    ],
+                ],
+            ],
         ],
     ],
     'controllers' => [
@@ -126,6 +136,7 @@ return array(
                     'mobileia' => ['allow' => 'guest', 'deny' => 'member,admin'],
                     'exist' => ['allow' => 'guest'],
                     'signin' => ['allow' => 'guest'],
+                    'register' => ['allow' => 'guest'],
                 ]
             ]
         ],

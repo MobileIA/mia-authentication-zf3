@@ -9,6 +9,60 @@ namespace MIAAuthentication\Controller;
  */
 class ApiController extends \MIABase\Controller\Api\BaseApiController
 {
+    /**
+     * Servicio para realizar login
+     * @return \Zend\View\Model\JsonModel
+     */
+    public function registerAction()
+    {
+        // Obtenemos parametros
+        $data = array(
+            'email' => $this->getParam('email', ''),
+            'password' => $this->getParam('password', ''), 
+            'firstname' => $this->getParam('firstname', ''),
+            'lastname' => $this->getParam('lastname', ''));
+        // Creamos formulario
+        $form = new \MIAAuthentication\Form\Register();
+        // Asignamos ServiceManager
+        $form->setServiceManager($this->getEvent()->getApplication()->getServiceManager());
+        // Activar validadores
+        $form->addInputFilter();
+        // Cargamos los parametros al formulario
+        $form->setData($data);
+        // Validamos el formulario
+        if(!$form->isValid()) {
+            return $this->executeError(\MIABase\Controller\Api\Error::REQUIRED_PARAMS);
+        }
+        // Creamos la entidad del usuario
+        $user = new \MIAAuthentication\Entity\User();
+        // Actualizamos los parametros
+        $this->updateParams($user);
+        // Generamos el Usuario en MobileiaAuth
+        $mobileiaAuth = $this->getMobileiaAuth()->registerUser($user->email, $data['password'], $user->toArray());
+        // Verificamos si se creo correctamente
+        if($mobileiaAuth->success){
+            // Asignar MIA_IDs
+            $user->mia_id = $mobileiaAuth->response->id;
+        }
+        // Guardamos el nuevo usuario
+        $this->getUserTable()->save($user);
+        // Llamamos a la funcion para generar configuraciones extras
+        $this->modelSaved($user);
+        // Ejecutamos el login
+        $result = $this->authenticate($user->email, $data['password']);
+        // Verificar si los datos son incorrectos
+        if ($result->getCode() != \Zend\Authentication\Result::SUCCESS) {
+            return $this->executeError(\MIABase\Controller\Api\Error::INVALID_PASSWORD);
+        }
+        // Verificar si se quiere guardar la sesión
+        $this->getSessionManager()->rememberMe(60*60*24*15);
+        
+        return $this->executeSuccess(true);
+    }
+    /**
+     * Servicio para realizar login
+     * @return JsonModel
+     */
     public function signinAction()
     {
         // Obtenemos parametros
@@ -95,7 +149,8 @@ class ApiController extends \MIABase\Controller\Api\BaseApiController
         $user->firstname = $this->getParam('firstname', '');
         $user->lastname = $this->getParam('lastname', '');
         $user->email = $this->getParam('email', '');
-        $user->photo = $this->getParam('photo', null);
+        $user->photo = $this->getParam('photo', '');
+        $user->phone = $this->getParam('phone', '');
         if($user->facebook_id == null){
             $user->facebook_id = '';
         }
@@ -141,5 +196,13 @@ class ApiController extends \MIABase\Controller\Api\BaseApiController
     protected function getUserTable()
     {
         return $this->getEvent()->getApplication()->getServiceManager()->get(\MIAAuthentication\Table\UserTable::class);
+    }
+    /**
+     * 
+     * @return \MobileIA\Auth\MobileiaAuth
+     */
+    protected function getMobileiaAuth()
+    {
+        return $this->getServiceManager()->get(\MobileIA\Auth\MobileiaAuth::class);
     }
 }
