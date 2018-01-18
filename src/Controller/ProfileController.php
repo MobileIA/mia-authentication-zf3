@@ -42,8 +42,17 @@ class ProfileController extends \MIABase\Controller\BaseController
         // Verificar si se enviaron los parametros requeridos
         if($firstname == ''||$lastname == ''){
             $this->flashMessenger()->addErrorMessage('El nombre y apellido no pueden estar vacio.');
-            return;
+            return $this->redirect()->toRoute('profile');
         }
+        // Guardar nuevos datos
+        $user = $this->identity();
+        $user->firstname = $firstname;
+        $user->lastname = $lastname;
+        $user->phone = $phone;
+        $this->getUserTable()->save($user);
+        // Enviar mensaje
+        $this->flashMessenger()->addSuccessMessage('Se han guardado sus datos correctamente.');
+        return $this->redirect()->toRoute('profile');
     }
     
     /**
@@ -58,5 +67,21 @@ class ProfileController extends \MIABase\Controller\BaseController
         $miaLayout = $this->getEvent()->getApplication()->getServiceManager()->get('ViewHelperManager')->get('miaLayout');
         // Obtenemos variable
         return $miaLayout()->get($key, $default);
+    }
+    /**
+     * 
+     * @return \Zend\Authentication\AuthenticationService
+     */
+    protected function getAuthenticationService()
+    {
+        return $this->getEvent()->getApplication()->getServiceManager()->get(\Zend\Authentication\AuthenticationService::class);
+    }
+    /**
+     * 
+     * @return \MIAAuthentication\Table\UserTable
+     */
+    protected function getUserTable()
+    {
+        return $this->getEvent()->getApplication()->getServiceManager()->get(\MIAAuthentication\Table\UserTable::class);
     }
 }
