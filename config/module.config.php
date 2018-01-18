@@ -75,10 +75,21 @@ return array(
                     ],
                 ],
             ],
+            'profile' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/profile',
+                    'defaults' => [
+                        'controller' => Controller\ProfileController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
         ],
     ],
     'controllers' => [
         'factories' => [
+            Controller\ProfileController::class => InvokableFactory::class,
             Controller\LoginController::class => InvokableFactory::class,
             Controller\ApiController::class => InvokableFactory::class
         ],
@@ -125,6 +136,11 @@ return array(
         'roles' => ['guest', 'member:guest', 'admin:member'],
         'roles_id' => [-1, 0, 1],
         'resources' => [
+            Controller\ProfileController::class => [
+                'actions' => [
+                    'index' => ['allow' => 'member'],
+                ]
+            ],
             Controller\LoginController::class => [
                 'actions' => [
                     'index' => ['allow' => 'guest', 'deny' => 'member,admin'],
