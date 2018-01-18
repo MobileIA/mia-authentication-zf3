@@ -27,6 +27,41 @@ class ProfileController extends \MIABase\Controller\BaseController
         return $view;
     }
     /**
+     * Funcion que se encarga de validar el formulario de cambio de contraseña del usuario
+     * @return ViewModel
+     */
+    public function changePasswordAction()
+    {
+        // Verificar si es una respuesta POST
+        if (!$this->getRequest()->isPost()) {
+            return $this->redirect()->toRoute('profile');
+        }
+        // Obtener contraseña anterior
+        $oldPassword = $this->params()->fromPost('old-password', '');
+        // Verificamos si se ingreso la contraseña
+        if($oldPassword == ''){
+            $this->flashMessenger()->addErrorMessage('Debe ingresar su actual contraseña.');
+            return $this->redirect()->toRoute('profile');
+        }
+        // Validar si es la contraseña correcta
+        if($this->getMobileiaAuth()->authenticate($this->identity()->email, $oldPassword) === false){
+            $this->flashMessenger()->addErrorMessage('Su contraseña actual no es correcta.');
+            return $this->redirect()->toRoute('profile');
+        }
+        // Obtener nueva contraseña
+        $newPassword = $this->params()->fromPost('new-password', '');
+        $rePassword = $this->params()->fromPost('re-password', '');
+        // Validar si se escribio correctamente la contraseña
+        if($newPassword == '' || $newPassword != $rePassword){
+            $this->flashMessenger()->addErrorMessage('Las contraseñas no coinciden');
+            return $this->redirect()->toRoute('profile');
+        }
+        // Enviar a cambiar la contraseña
+        $this->getMobileiaAuth()->changePasswordUser($this->identity()->mia_id, $newPassword);
+        $this->flashMessenger()->addSuccessMessage('Se ha cambiado su contraseña');
+        return $this->redirect()->toRoute('profile');
+    }
+    /**
      * Funcion que se encarga de verificar si se envio el formulario y guardar los datos
      */
     protected function verifyPost()
@@ -83,5 +118,13 @@ class ProfileController extends \MIABase\Controller\BaseController
     protected function getUserTable()
     {
         return $this->getEvent()->getApplication()->getServiceManager()->get(\MIAAuthentication\Table\UserTable::class);
+    }
+    /**
+     * 
+     * @return \MobileIA\Auth\MobileiaAuth
+     */
+    protected function getMobileiaAuth()
+    {
+        return $this->getServiceManager()->get(\MobileIA\Auth\MobileiaAuth::class);
     }
 }

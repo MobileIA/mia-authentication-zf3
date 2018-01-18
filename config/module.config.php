@@ -85,6 +85,16 @@ return array(
                     ],
                 ],
             ],
+            'change-password' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/change-password',
+                    'defaults' => [
+                        'controller' => Controller\ProfileController::class,
+                        'action'     => 'changePassword',
+                    ],
+                ],
+            ],
         ],
     ],
     'controllers' => [
@@ -139,6 +149,7 @@ return array(
             Controller\ProfileController::class => [
                 'actions' => [
                     'index' => ['allow' => 'member'],
+                    'changePassword' => ['allow' => 'member'],
                 ]
             ],
             Controller\LoginController::class => [
