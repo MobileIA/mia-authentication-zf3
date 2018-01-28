@@ -27,6 +27,18 @@ class UserTable extends \MIABase\Table\Base
         return $this->tableGateway->select(array('email' => $email))->current();
     }
     /**
+     * Devuelve el usuario a traves de su telefono
+     * @param string $phone
+     * @return \MIAAuthentication\Entity\User
+     */
+    public function fetchByPhone($phone)
+    {
+        return $this->tableGateway->select(function (\Zend\Db\Sql\Select $select) use($phone) {
+            $select->where->addPredicate(new \Zend\Db\Sql\Predicate\Expression('phone LIKE ?', '%' . substr($phone, -8)));
+            $select->where->addPredicate(new \Zend\Db\Sql\Predicate\Expression('deleted = 0'));
+        })->current();
+    }
+    /**
      * Obtiene todos los usuarios indicados por su IDs
      * @param array $ids
      * @return array
