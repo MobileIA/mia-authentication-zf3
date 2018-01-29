@@ -1,7 +1,7 @@
 {
     "name": "mobileia/mia-authentication-zf3",
     "description": "The library for Authentication in Zend Framework 3",
-    "version": "0.0.50",
+    "version": "0.0.51",
     "minimum-stability": "stable",
     "license": "MIT",
     "authors": [

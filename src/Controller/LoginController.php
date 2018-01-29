@@ -114,6 +114,17 @@ class LoginController extends AbstractActionController
     }
     
     /**
+     * Pagina de no tener permisos
+     * @return ViewModel
+     */
+    public function privilegeAction()
+    {
+        $view = new ViewModel();
+        $this->layout('layout/layout');
+        $view->setTemplate('mia-layout-elite/error/privilege');
+        return $view;
+    }
+    /**
      * The "logout" action performs logout operation.
      */
     public function logoutAction() 

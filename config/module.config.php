@@ -15,6 +15,16 @@ use Zend\ServiceManager\Factory\InvokableFactory;
 return array(
     'router' => [
         'routes' => [
+            'privileges' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/login',
+                    'defaults' => [
+                        'controller' => Controller\LoginController::class,
+                        'action'     => 'privilege',
+                    ],
+                ],
+            ],
             'authentication' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -155,7 +165,8 @@ return array(
             Controller\LoginController::class => [
                 'actions' => [
                     'index' => ['allow' => 'guest', 'deny' => 'member,admin'],
-                    'logout' => ['allow' => 'member,admin', 'deny' => 'guest']
+                    'logout' => ['allow' => 'member,admin', 'deny' => 'guest'],
+                    'privilege' => ['allow' => 'member,admin', 'deny' => 'guest']
                 ]
             ],
             Controller\ApiController::class => [
