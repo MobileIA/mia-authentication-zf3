@@ -18,7 +18,7 @@ return array(
             'privileges' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/login',
+                    'route'    => '/privilege',
                     'defaults' => [
                         'controller' => Controller\LoginController::class,
                         'action'     => 'privilege',
