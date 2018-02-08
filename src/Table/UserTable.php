@@ -33,6 +33,11 @@ class UserTable extends \MIABase\Table\Base
      */
     public function fetchByPhone($phone)
     {
+        // Verificar si el telefono es valido
+        if($phone == ''){
+            return null;
+        }
+        // Devolver usuario
         return $this->tableGateway->select(function (\Zend\Db\Sql\Select $select) use($phone) {
             $select->where->addPredicate(new \Zend\Db\Sql\Predicate\Expression('phone LIKE ?', '%' . substr($phone, -8)));
             $select->where->addPredicate(new \Zend\Db\Sql\Predicate\Expression('deleted = 0'));
