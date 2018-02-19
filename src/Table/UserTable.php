@@ -27,6 +27,15 @@ class UserTable extends \MIABase\Table\Base
         return $this->tableGateway->select(array('email' => $email))->current();
     }
     /**
+     * Obtiene un usuario a traves de su Facebook ID
+     * @param string $facebookId
+     * @return \MIAAuthentication\Entity\User|null
+     */
+    public function fetchByFacebook($facebookId)
+    {
+        return $this->tableGateway->select(array('facebook_id' => $facebookId))->current();
+    }
+    /**
      * Devuelve el usuario a traves de su telefono
      * @param string $phone
      * @return \MIAAuthentication\Entity\User
