@@ -63,4 +63,17 @@ class UserTable extends \MIABase\Table\Base
         $select->where->in('id', $ids);
         return $this->tableGateway->selectWith($select);
     }
+    /**
+     * Busca usuarios por un texto
+     * @param string $query
+     * @return array
+     */
+    public function search($query)
+    {
+        // Devolver usuarios
+        return $this->tableGateway->select(function (\Zend\Db\Sql\Select $select) use($query) {
+            $select->where->addPredicate(new \Zend\Db\Sql\Predicate\Expression('(firstname LIKE ? OR lastname LIKE ? OR email LIKE ?)', array('%'.$query.'%', '%'.$query.'%', '%'.$query.'%')));
+            $select->where->addPredicate(new \Zend\Db\Sql\Predicate\Expression('deleted = 0'));
+        });
+    }
 }
