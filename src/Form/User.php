@@ -77,6 +77,9 @@ class User extends \MIABase\Form\Base
         $this->add([
             'name' => 'submit',
             'type' => 'submit',
+            'options' => [
+                'label' => 'Guardar'
+            ],
             'attributes' => [
                 'value' => 'Enviar',
                 'id'    => 'submitbutton',
