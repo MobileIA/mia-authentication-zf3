@@ -151,6 +151,7 @@ class ApiController extends \MIABase\Controller\Api\BaseApiController
         $user->email = $this->getParam('email', '');
         $user->photo = $this->getParam('photo', '');
         $user->phone = $this->getParam('phone', '');
+        $user->facebook_id = $this->getParam('facebook_id', '');
         if($user->facebook_id == null){
             $user->facebook_id = '';
         }
