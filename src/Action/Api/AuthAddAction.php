@@ -29,6 +29,8 @@ class AuthAddAction extends \MIABase\Action\Api\Base
     protected function save()
     {
         $this->getModel()->exchange($this->getParams());
+        // Resetear ID para que no se pueda cometer un ilicito
+        $this->getModel()->id = 0;
         $this->table->save($this->getModel());
         if(method_exists($this->controller, 'modelSaved')){
             $this->controller->modelSaved($this->getModel());

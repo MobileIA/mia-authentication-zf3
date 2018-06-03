@@ -17,7 +17,10 @@ class AuthEditAction extends AuthAddAction
     
     public function isValid()
     {
+        // Veriricar si el registro existe
         if($this->getModel() === null){
+            return false;
+        }else if($this->getModel()->user_id != $this->user->id){
             return false;
         }
         return true;
@@ -28,7 +31,7 @@ class AuthEditAction extends AuthAddAction
         // Copiamos datos antes de editar
         $this->old->exchange($this->getModel()->toArray());
         // Cargamos nuevos datos
-        $this->getModel()->exchangeObject($this->controller->getAllParams());
+        $this->getModel()->exchange($this->getParams());
         // Guardamos en la DB
         $this->table->save($this->getModel());
         // Verificamos si existe una funcionalidad extra al ser editado
@@ -47,6 +50,10 @@ class AuthEditAction extends AuthAddAction
         if(!$this->controller->allowModelEdit($this->getModel())){
             return $this->executeError(false);
         }
+        // Verificar si tiene validaciones personalizadas
+        if(method_exists($this->controller, 'validatorParamsInEdit') && !$this->controller->validatorParamsInEdit($this->getParamsForValidator())){
+            return $this->executeError(false);
+        }
         // Guardar modelo
         $this->save();
         // Generar array para la respuesta
@@ -55,6 +62,11 @@ class AuthEditAction extends AuthAddAction
         }
         // Respuesta por defecto
         return $this->executeSuccess($this->getModel()->toArray());
+    }
+    
+    protected function getParamsForValidator()
+    {
+        return array_merge($this->getModel()->toArray(), (array)$this->getParams());
     }
     
     public function getModel()
