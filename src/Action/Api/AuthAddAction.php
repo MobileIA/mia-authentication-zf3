@@ -37,6 +37,13 @@ class AuthAddAction extends \MIABase\Action\Api\Base
     
     public function execute()
     {
+        // Verificar si tiene validaciones personalizadas
+        if(method_exists($this->controller, 'validatorParamsInAdd') && !$this->controller->validatorParamsInAdd($this->getParams())){
+            return new \Zend\View\Model\JsonModel(array(
+                'success' => false, 
+                'response' => false
+            ));
+        }
         // Guardar modelo
         $this->save();
         // Generar array para la respuesta
