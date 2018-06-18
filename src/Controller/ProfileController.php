@@ -41,20 +41,25 @@ class ProfileController extends \MIABase\Controller\BaseController
         // Verificamos si se ingreso la contraseña
         if($oldPassword == ''){
             $this->flashMessenger()->addErrorMessage('Debe ingresar su actual contraseña.');
-            return $this->redirect()->toRoute('profile');
+            return $this->redirect()->toRoute('profile', array('change' => 1));
         }
         // Validar si es la contraseña correcta
         if($this->getMobileiaAuth()->authenticate($this->identity()->email, $oldPassword) === false){
             $this->flashMessenger()->addErrorMessage('Su contraseña actual no es correcta.');
-            return $this->redirect()->toRoute('profile');
+            return $this->redirect()->toRoute('profile', array('change' => 1));
         }
         // Obtener nueva contraseña
         $newPassword = $this->params()->fromPost('new-password', '');
         $rePassword = $this->params()->fromPost('re-password', '');
+        // Validar si es distinta.
+        if($oldPassword == $newPassword){
+            $this->flashMessenger()->addErrorMessage('Tu contraseña debe ser diferente a la anterior!');
+            return $this->redirect()->toRoute('profile', array('change' => 1));
+        }
         // Validar si se escribio correctamente la contraseña
         if($newPassword == '' || $newPassword != $rePassword){
             $this->flashMessenger()->addErrorMessage('Las contraseñas no coinciden');
-            return $this->redirect()->toRoute('profile');
+            return $this->redirect()->toRoute('profile', array('change' => 1));
         }
         // Enviar a cambiar la contraseña
         $this->getMobileiaAuth()->changePasswordUser($this->identity()->mia_id, $newPassword);

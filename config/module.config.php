@@ -88,7 +88,7 @@ return array(
             'profile' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/profile',
+                    'route'    => '/profile[/:change]',
                     'defaults' => [
                         'controller' => Controller\ProfileController::class,
                         'action'     => 'index',
