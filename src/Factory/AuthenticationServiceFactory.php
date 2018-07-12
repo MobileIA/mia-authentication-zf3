@@ -12,6 +12,7 @@ class AuthenticationServiceFactory implements \Zend\ServiceManager\Factory\Facto
     public function __invoke(\Interop\Container\ContainerInterface $container, $requestedName, array $options = null)
     {
         $sessionManager = $container->get(\Zend\Session\SessionManager::class);
+        $sessionManager->rememberMe(60*60*24);
         $authStorage = new \Zend\Authentication\Storage\Session('Zend_Auth', 'session', $sessionManager);
         $table = $container->get(\MIAAuthentication\Table\UserTable::class);
         $mobileiaService = $container->get(\MobileIA\Auth\MobileiaAuth::class);
