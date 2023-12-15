@@ -47,6 +47,8 @@ class User extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilter
      */
     public $role = null;
 
+    public $password = null;
+
     public function toArray()
     {
         $data = parent::toArray();

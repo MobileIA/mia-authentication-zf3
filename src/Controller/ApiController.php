@@ -37,13 +37,8 @@ class ApiController extends \MIABase\Controller\Api\BaseApiController
         $user = new \MIAAuthentication\Entity\User();
         // Actualizamos los parametros
         $this->updateParams($user);
-        // Generamos el Usuario en MobileiaAuth
-        $mobileiaAuth = $this->getMobileiaAuth()->registerUser($user->email, $data['password'], $user->toArray());
-        // Verificamos si se creo correctamente
-        if($mobileiaAuth->success){
-            // Asignar MIA_IDs
-            $user->mia_id = $mobileiaAuth->response->id;
-        }
+        // Asignar MIA_IDs
+        $user->mia_id = $user->id;
         // Guardamos el nuevo usuario
         $this->getUserTable()->save($user);
         // Llamamos a la funcion para generar configuraciones extras
