@@ -28,7 +28,8 @@ class MobileiaAuthFactory implements \Zend\ServiceManager\Factory\FactoryInterfa
             $appId = $config['mobileia_lab']['app_id'];
             $appSecret = $config['mobileia_lab']['app_secret'];
         }
+        $table = $container->get(\MIAAuthentication\Table\UserTable::class);
         // Creamos el objeto
-        return new \MobileIA\Auth\MobileiaAuth($appId, $appSecret);
+        return new \MobileIA\Auth\MobileiaAuth($appId, $appSecret, $table);
     }
 }
